@@ -2,6 +2,30 @@ apply plugin: 'com.android.application'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
+ext {
+    bintrayRepo = 'maven'
+    bintrayName = 'persianrangedatepicker'
+
+    publishedGroupId = 'com.sardari'
+    libraryName = 'persianrangedatepicker'
+    artifact = 'persianrangedatepicker'
+
+    libraryDescription = 'Persian Range Date Picker'
+
+    siteUrl = 'https://github.com/ali-sardari/PersianRangeDatePicker'
+    gitUrl = 'https://github.com/ali-sardari/PersianRangeDatePicker.git'
+
+    libraryVersion = '0.1.3'
+
+    developerId = 'ali-sardari'
+    developerName = 'Ali Sardari'
+    developerEmail = 'ali.sardari@yahoo.com'
+
+    licenseName = 'The Apache Software License, Version 2.0'
+    licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    allLicenses = ["Apache-2.0"]
+}
+
 android {
     compileSdkVersion 27
     defaultConfig {
@@ -17,30 +41,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
-    ext {
-        bintrayRepo = 'maven'
-        bintrayName = 'persianrangedatepicker'
-
-        publishedGroupId = 'com.sardari'
-        libraryName = 'persianrangedatepicker'
-        artifact = 'persianrangedatepicker'
-
-        libraryDescription = 'Persian Range Date Picker'
-
-        siteUrl = 'https://github.com/ali-sardari/PersianRangeDatePicker'
-        gitUrl = 'https://github.com/ali-sardari/PersianRangeDatePicker.git'
-
-        libraryVersion = '0.1.3'
-
-        developerId = 'ali-sardari'
-        developerName = 'Ali Sardari'
-        developerEmail = 'ali.sardari@yahoo.com'
-
-        licenseName = 'The Apache Software License, Version 2.0'
-        licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-        allLicenses = ["Apache-2.0"]
-    }
 }
 
 dependencies {
@@ -48,3 +48,5 @@ dependencies {
     implementation project(path: ':daterangepicker')
     implementation 'com.android.support:appcompat-v7:27.1.1'
 }
+
+apply from: '../scripts/gradle-mvn-push.gradle'
