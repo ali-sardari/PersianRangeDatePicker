@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Fonts -->
+    <color name="title_color">#000</color>
+    <color name="date_color">#000</color>
+    <color name="week_color">#717171</color>
+
+    <!-- Calendar Date -->
+    <color name="default_date_color">#2b303d</color>
+    <color name="disable_date_color">#BDBDBD</color>
+    <color name="range_date_color">@color/default_date_color</color>
+    <color name="selected_date_color">#FFF</color>
+    <color name="range_bg_color">#deccddf7</color>
+
+    <!--<color name="range_start_bg_color">#e175a2</color>-->
+    <!--<color name="range_end_bg_color">#FF006B</color>-->
+
+    <color name="calendar_text">#474747</color>
+
+    <color name="header_color">#e4215d</color>
+    <color name="header_title_color">#ffffff</color>
+
+    <color name="holiday_date_color">#FF006B</color>
+    <!--<color name="today_date_color">#51bf4b</color>-->
+    <color name="event_date_color">#0097e2</color>
+
+    <!--<color name="selected_date_circle_color">#e4215d</color>-->
+    <!--<color name="range_color">#60e4215d</color>-->
+
+    <color name="today_date_color">#51bf4b</color>
+    <color name="selected_date_circle_color">#2b303d</color>
+    <color name="range_color">#ccddf7</color>
+</resources>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/txtStartDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/btn_ShowDatePicker"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:text="Start Date" />
+
+    <TextView
+        android:id="@+id/txtLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/btn_ShowDatePicker"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/txtStartDate"
+        android:text="تا"
+        android:textColor="@color/colorAccent" />
+
+    <TextView
+        android:id="@+id/txtEndDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/btn_ShowDatePicker"
+        android:layout_marginRight="10dp"
+        android:layout_toLeftOf="@id/txtLabel"
+        android:text="End Date" />
+
+    <Button
+        android:id="@+id/btn_ShowDatePicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:text="انتخاب تاریخ" />
+
+</RelativeLayout>

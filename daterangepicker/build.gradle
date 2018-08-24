@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+//apply plugin: 'com.jfrog.bintray'
+//apply plugin: 'com.github.dcendents.android-maven'
+
+
+android {
+    compileSdkVersion 27
+    buildToolsVersion '27.0.3'
+    flavorDimensions "default"
+
+    defaultConfig {
+        minSdkVersion 16
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+//        group = 'com.github.hathibelagal.librarytutorial' // Change this to match your package name
+//        version = '1.0.1' // Change this to match your version number
+
+        vectorDrawables.useSupportLibrary = true
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+}

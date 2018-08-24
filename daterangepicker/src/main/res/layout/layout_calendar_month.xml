@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <include
+        layout="@layout/layout_calendar_nav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <include
+        layout="@layout/layout_calendar_week_days"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/shape_line" />
+
+    <LinearLayout
+        android:id="@+id/llDaysContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical"
+        android:padding="4dp">
+
+        <include
+            android:id="@+id/rlDayContainer1"
+            layout="@layout/layout_calendar_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/rlDayContainer2"
+            layout="@layout/layout_calendar_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/rlDayContainer3"
+            layout="@layout/layout_calendar_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/rlDayContainer4"
+            layout="@layout/layout_calendar_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/rlDayContainer5"
+            layout="@layout/layout_calendar_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <include
+            android:id="@+id/rlDayContainer6"
+            layout="@layout/layout_calendar_week"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <!--<View -->
+    <!--android:layout_width="wrap_content" -->
+    <!--android:layout_height="1dp" -->
+    <!--android:background="@drawable/horizontal_line_with_gradient" /> -->
+
+</LinearLayout>

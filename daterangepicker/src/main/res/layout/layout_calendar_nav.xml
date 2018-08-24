@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rlHeaderCalendar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/header_color">
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imgVNavLeft"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="centerInside"
+        android:tint="@android:color/white"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_vector_navigate_left" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_toLeftOf="@+id/imgVNavRight"
+        android:layout_toRightOf="@+id/imgVNavLeft"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <com.sardari.daterangepicker.customviews.CustomTextView
+            android:id="@+id/tvYearTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:tag="dateTitle"
+            android:text="فروردین 1397"
+            android:textColor="@color/header_title_color"
+            android:textSize="@dimen/text_size_title" />
+
+        <TextView
+            android:id="@+id/tvYearGeorgianTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:text="June - July"
+            android:textColor="@color/header_title_color" />
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/imgVNavRight"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:scaleType="center"
+        android:tint="@android:color/white"
+        android:visibility="visible"
+        app:srcCompat="@drawable/ic_vector_navigate_right" />
+
+</RelativeLayout>

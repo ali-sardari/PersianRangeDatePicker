@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DateRangeCalendarView">
+        <attr name="title_color" format="color" />
+        <attr name="week_color" format="color" />
+        <attr name="range_color" format="color" />
+        <attr name="selected_date_circle_color" format="color" />
+        <attr name="selected_date_color" format="color" />
+        <attr name="default_date_color" format="color" />
+        <attr name="holidayColor" format="color" />
+        <attr name="range_date_color" format="color" />
+        <attr name="disable_date_color" format="color" />
+        <attr name="enable_time_selection" format="boolean" />
+        <attr name="text_size_title" format="dimension" />
+        <attr name="text_size_week" format="dimension" />
+        <attr name="text_size_date" format="dimension" />
+        <attr name="header_color" format="color" />
+        <attr name="header_bg" format="integer" />
+        <attr name="selectionMode" format="enum">
+            <enum name="Single" value="1" />
+            <enum name="Multiple" value="2" />
+            <enum name="Range" value="3" />
+            <enum name="None" value="4" />
+        </attr>
+
+    </declare-styleable>
+</resources>
