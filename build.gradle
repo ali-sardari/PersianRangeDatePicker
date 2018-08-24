@@ -10,6 +10,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:3.1.4'
         classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.4.0'
     }
 }
 
@@ -24,29 +25,12 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-//task generateSourcesJar(type: Jar) {
-//    from android.sourceSets.main.java.srcDirs
-//
-//    classifier 'sources'
-//}
-//
-//task generateJavadocs(type: Javadoc) {
-//    source = android.sourceSets.main.java.srcDirs
-//
-//    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
-//}
-//
-//task generateJavadocsJar(type: Jar) {
-//    from generateJavadocs.destinationDir
-//
-//    classifier 'javadoc'
-//
-//}
-//
-//generateJavadocsJar.dependsOn generateJavadocs
-//
-//artifacts {
-//    archives generateJavaDocsJar
-//    archives generateSourcesJar
-//}
-//
+ext {
+    compileSdkVersion = 27
+    buildToolsVersion = "27.0.3"
+    minSdkVersion = 16
+    targetSdkVersion = 27
+    supportLibraryVersion = "27.1.1"
+
+    junitVersion = "4.12"
+}
