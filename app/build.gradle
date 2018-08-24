@@ -20,5 +20,8 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(path: ':daterangepicker')
+//    implementation 'com.github.ali-sardari:PersianRangeDatePicker:1.0.2'
     implementation 'com.android.support:appcompat-v7:27.1.1'
+
 }
+
