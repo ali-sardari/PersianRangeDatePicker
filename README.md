@@ -26,20 +26,18 @@ dependencies {
 Then in your Java Code, you use it like below.
 
 ```java
-{
-    DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
-    datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
-    datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
-    datePickerDialog.setSelectableDaysCount(5);
-    datePickerDialog.setCanceledOnTouchOutside(true);
-    datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
+DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
+datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
+datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
+datePickerDialog.setSelectableDaysCount(5);
+datePickerDialog.setCanceledOnTouchOutside(true);
+datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
         @Override
         public void onRangeDateSelected(PersianCalendar startDate, PersianCalendar endDate) {
             txtStartDate.setText(startDate.getPersianShortDate());
             txtEndDate.setText(endDate.getPersianShortDate());
         }
-    });
-}
+});
 
 datePickerDialog.showDialog();
 ```
