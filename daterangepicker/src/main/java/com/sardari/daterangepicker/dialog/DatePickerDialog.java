@@ -2,10 +2,10 @@ package com.sardari.daterangepicker.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
@@ -47,12 +47,12 @@ public class DatePickerDialog extends Dialog {
         setContentView(R.layout.dialog_date_picker);
 
         btn_Accept = findViewById(R.id.btn_Accept);
-        calendar = findViewById(R.id.calendar);
+//        calendar = findViewById(R.id.calendar);
         //endregion
     }
 
     public void showDialog() {
-//        calendar=new DateRangeCalendarView(mContext);
+        calendar = new DateRangeCalendarView(mContext);
         calendar.setCalendarListener(new DateRangeCalendarView.CalendarListener() {
             @Override
             public void onDateSelected(PersianCalendar _date) {
@@ -106,24 +106,19 @@ public class DatePickerDialog extends Dialog {
             }
         });
 
-        calendar.setMaxDate(maxDate);
-        calendar.setMinDate(minDate);
-        calendar.setCurrentDate(currentDate);
         calendar.setSelectionMode(selectionMode.getValue());
         calendar.setDisableDaysAgo(disableDaysAgo);
         calendar.setTypeface(typeface);
+        calendar.setCurrentDate(currentDate);
+        calendar.setMaxDate(maxDate);
+        calendar.setMinDate(minDate);
         calendar.setShowGregorianDate(showGregorianDate);
+        calendar.setShouldEnabledTime(false);
 
+        calendar.build();
 
-        calendar.setWeekTitleColor(Color.parseColor("#519c3f"));
-        calendar.setHolidayColor(Color.parseColor("#e4215d"));
-        calendar.setTodayColor(Color.parseColor("#e1218d"));
-        calendar.setRangeStripColor(Color.parseColor("#e1218d"));
-        calendar.setDefaultDateColor(Color.parseColor("#e1218d"));
-
-//        calendar.();
-//        calendar.setShouldEnabledTime(true);
-
+        ViewGroup insertPoint = findViewById(R.id.content);
+        insertPoint.addView(calendar);
 
 
         if (selectionMode.getValue() == DateRangeCalendarView.SelectionMode.None.getValue()) {
@@ -178,7 +173,6 @@ public class DatePickerDialog extends Dialog {
 
     public void setCurrentDate(PersianCalendar currentDate) {
         this.currentDate = currentDate;
-        calendar.setCurrentDate(currentDate);
     }
     //endregion
 

@@ -5,7 +5,6 @@ import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -20,6 +19,7 @@ import android.widget.TextView;
 import com.sardari.daterangepicker.R;
 import com.sardari.daterangepicker.dialog.TimePickerDialog;
 import com.sardari.daterangepicker.models.DayContainer;
+import com.sardari.daterangepicker.utils.FontUtils;
 import com.sardari.daterangepicker.utils.MyUtils;
 import com.sardari.daterangepicker.utils.PersianCalendar;
 
@@ -76,18 +76,24 @@ public class DateRangeCalendarView extends LinearLayout {
     //region Constructor
     public DateRangeCalendarView(Context context) {
         super(context);
+
+        this.mContext = context;
+        this.attrs = null;
+
+        initView();
     }
 
     public DateRangeCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
 
+        this.mContext = context;
         this.attrs = attrs;
 
-        initView(context);
+        initView();
     }
 
-    private void initView(Context context) {
-        mContext = context;
+    private void initView() {
+        typeface = FontUtils.Default(mContext);
         locale = mContext.getResources().getConfiguration().locale;
 
         setDefaultValues();
@@ -95,31 +101,9 @@ public class DateRangeCalendarView extends LinearLayout {
         setAttributes();
 
         init();
-//        LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-//
-//        LinearLayout mainView = (LinearLayout) layoutInflater.inflate(R.layout.layout_calendar_month, this, true);
-//        llDaysContainer = mainView.findViewById(R.id.llDaysContainer);
-//        llTitleWeekContainer = mainView.findViewById(R.id.llTitleWeekContainer);
-//        tvYearTitle = mainView.findViewById(R.id.tvYearTitle);
-//        tvYearGeorgianTitle = mainView.findViewById(R.id.tvYearGeorgianTitle);
-//        imgVNavLeft = mainView.findViewById(R.id.imgVNavLeft);
-//        imgVNavRight = mainView.findViewById(R.id.imgVNavRight);
-//
-//        RelativeLayout rlHeaderCalendar = mainView.findViewById(R.id.rlHeaderCalendar);
-//        rlHeaderCalendar.setBackgroundColor(headerBackgroundColor);
-//
-//        setListeners();
-//
-//        if (isInEditMode()) {
-//            return;
-//        }
-//
-//        drawCalendarForMonth(getCurrentMonth(new PersianCalendar()));
-//
-//        setWeekTitleColor(weekColor);
     }
 
-    private void setDefaultValues(){
+    private void setDefaultValues() {
         textSizeTitle = getResources().getDimension(R.dimen.text_size_title);
         textSizeWeek = getResources().getDimension(R.dimen.text_size_week);
         textSizeDate = getResources().getDimension(R.dimen.text_size_date);
@@ -170,7 +154,7 @@ public class DateRangeCalendarView extends LinearLayout {
         }
     }
 
-    private void init(){
+    private void init() {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 
         LinearLayout mainView = (LinearLayout) layoutInflater.inflate(R.layout.layout_calendar_month, this, true);
@@ -191,18 +175,7 @@ public class DateRangeCalendarView extends LinearLayout {
         }
 
         build();
-
-//        drawCalendarForMonth(getCurrentMonth(new PersianCalendar()));
-//
-//        setWeekTitleColor(weekColor);
     }
-
-    private void build(){
-        drawCalendarForMonth(getCurrentMonth(new PersianCalendar()));
-
-        setWeekTitleColor(weekColor);
-    }
-
     //endregion
 
     //region Core
@@ -259,10 +232,13 @@ public class DateRangeCalendarView extends LinearLayout {
                     TimePickerDialog awesomeTimePickerDialog = new TimePickerDialog(mContext, mContext.getString(R.string.select_time), new TimePickerDialog.TimePickerCallback() {
                         @Override
                         public void onTimeSelected(int hours, int mins) {
+                            PersianCalendar p = (PersianCalendar) selectedCal.clone();
+
                             selectedCal.set(Calendar.HOUR, hours);
                             selectedCal.set(Calendar.MINUTE, mins);
                             selectedCal.set(Calendar.SECOND, 0);
                             selectedCal.set(Calendar.MILLISECOND, 0);
+                            selectedCal.setPersianDate(p.getPersianYear(), p.getPersianMonth(), p.getPersianDay());
 
                             if (calendarListener != null) {
                                 calendarListener.onDateSelected(selectedCal);
@@ -318,12 +294,14 @@ public class DateRangeCalendarView extends LinearLayout {
                     TimePickerDialog awesomeTimePickerDialog = new TimePickerDialog(mContext, mContext.getString(R.string.select_time), new TimePickerDialog.TimePickerCallback() {
                         @Override
                         public void onTimeSelected(int hours, int mins) {
+                            PersianCalendar p = (PersianCalendar) selectedCal.clone();
+
                             selectedCal.set(Calendar.HOUR, hours);
                             selectedCal.set(Calendar.MINUTE, mins);
                             selectedCal.set(Calendar.SECOND, 0);
                             selectedCal.set(Calendar.MILLISECOND, 0);
+                            selectedCal.setPersianDate(p.getPersianYear(), p.getPersianMonth(), p.getPersianDay());
 
-                            Log.i("Tag", "Time: " + selectedCal.getTime().toString());
                             if (calendarListener != null && minSelectedDate != null && maxSelectedDate != null) {
                                 calendarListener.onDateRangeSelected(minSelectedDate, maxSelectedDate);
                             }
@@ -496,7 +474,7 @@ public class DateRangeCalendarView extends LinearLayout {
 
     //---------------------------------------------------------------------------------------------
     private void setToday(DayContainer container, PersianCalendar persianCalendar) {
-        if (getCurrentDate().compareTo(persianCalendar) == 0) {
+        if (getCurrentDate().getPersianShortDate().compareTo(persianCalendar.getPersianShortDate()) == 0) {
             container.imgEvent.setVisibility(VISIBLE);
             container.imgEvent.setColorFilter(todayColor, android.graphics.PorterDuff.Mode.SRC_IN);
 //            container.tvDate.setTextColor(todayColor);
@@ -714,16 +692,10 @@ public class DateRangeCalendarView extends LinearLayout {
         }
     }
 
-    /**
-     * To set week title color
-     *
-     * @param color - resource color value
-     */
-    public void setWeekTitleColor(@ColorInt int color) {
-        weekColor = color;
+    private void setWeekTitleColor() {
         for (int i = 0; i < llTitleWeekContainer.getChildCount(); i++) {
             CustomTextView textView = (CustomTextView) llTitleWeekContainer.getChildAt(i);
-            textView.setTextColor(color);
+            textView.setTextColor(weekColor);
         }
     }
 
@@ -732,11 +704,11 @@ public class DateRangeCalendarView extends LinearLayout {
             this.typeface = typeface;
 
             drawCalendarForMonth(currentCalendarMonth);
-            tvYearTitle.setTypeface(typeface);
+            tvYearTitle.setTypeface(this.typeface);
 
             for (int i = 0; i < llTitleWeekContainer.getChildCount(); i++) {
                 CustomTextView textView = (CustomTextView) llTitleWeekContainer.getChildAt(i);
-                textView.setTypeface(typeface);
+                textView.setTypeface(this.typeface);
             }
         }
     }
@@ -744,6 +716,13 @@ public class DateRangeCalendarView extends LinearLayout {
     //endregion
     //---------------------------------------------------------------------------------------------
     //region Properties
+    public void build() {
+
+        drawCalendarForMonth(getCurrentMonth(currentDate));
+
+        setWeekTitleColor();
+    }
+
     //region selectionMode -> Getter/Setter
     private int selectionMode = SelectionMode.Range.getValue();
 
@@ -766,12 +745,12 @@ public class DateRangeCalendarView extends LinearLayout {
     public void setCurrentDate(PersianCalendar currentDate) {
         this.currentDate = currentDate;
 
-        if (currentDate != null) {
-            currentCalendarMonth = (PersianCalendar) currentDate.clone();
-            currentCalendarMonth.setPersianDay(1);
-
-            resetAllSelectedViews();
-        }
+//        if (currentDate != null) {
+//            currentCalendarMonth = (PersianCalendar) currentDate.clone();
+//            currentCalendarMonth.setPersianDay(1);
+//
+//            resetAllSelectedViews();
+//        }
     }
     //endregion
 
@@ -883,8 +862,6 @@ public class DateRangeCalendarView extends LinearLayout {
 
     public void setDefaultDateColor(int defaultDateColor) {
         this.defaultDateColor = defaultDateColor;
-
-        build();
     }
 
     public int getDisableDateColor() {
