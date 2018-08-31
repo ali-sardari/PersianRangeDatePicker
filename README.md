@@ -10,7 +10,6 @@ Step 1. Add the JitPack repository to your build file. Add it in your root build
 ```groovy
 allprojects {
         repositories {
-            ...
             maven { url "https://jitpack.io" }
         }
     }

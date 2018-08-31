@@ -7,7 +7,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.sardari.daterangepicker.customviews.DateRangeCalendarView;
-import com.sardari.daterangepicker.dialog_fragment.DatePickerDialog;
+import com.sardari.daterangepicker.dialog.DatePickerDialog;
 import com.sardari.daterangepicker.utils.PersianCalendar;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,32 +31,22 @@ public class MainActivity extends AppCompatActivity {
         btn_ShowDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDatePicker(DateRangeCalendarView.SelectionMode.Range);
+                ShowDatePicker(DateRangeCalendarView.SelectionMode.None);
             }
         });
     }
 
     private void ShowDatePicker(DateRangeCalendarView.SelectionMode selectionMode) {
-//        PersianCalendar today = new PersianCalendar();
-//
-//        PersianCalendar persianCalendar_Max = (PersianCalendar) today.clone();
-//        persianCalendar_Max.setPersianYear(today.getPersianYear() + 1);
-
         DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
-//        datePickerDialog.setTypeface(FontUtils.Default());
-        datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
-        datePickerDialog.setSelectionMode(selectionMode);
-        datePickerDialog.setSelectableDaysCount(5);
+//        datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
+//        datePickerDialog.setSelectionMode(selectionMode);
+//        datePickerDialog.setSelectableDaysCount(5);
         datePickerDialog.setCanceledOnTouchOutside(true);
-//        datePickerDialog.setCurrentDate(today);
-//        datePickerDialog.setMinDate(persianCalendar_Min);
-//        datePickerDialog.setMaxDate(persianCalendar_Max);
-
         datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
             @Override
             public void onRangeDateSelected(PersianCalendar startDate, PersianCalendar endDate) {
-                txtStartDate.setText(startDate.getPersianShortDate());
-                txtEndDate.setText(endDate.getPersianShortDate());
+                txtStartDate.setText(startDate.getPersianShortDateTime());
+                txtEndDate.setText(endDate.getPersianShortDateTime());
             }
         });
 

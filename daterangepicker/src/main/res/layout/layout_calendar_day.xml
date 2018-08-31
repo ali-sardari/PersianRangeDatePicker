@@ -8,27 +8,27 @@
     <com.sardari.daterangepicker.customviews.CustomTextView
         android:id="@+id/dayOfMonthText"
         style="@style/DayOfMonthStyle"
-        android:text="31" />
+        android:text="0" />
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imgEvent"
-        android:layout_width= "wrap_content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/dayOfMonthText"
-        android:layout_alignEnd="@+id/dayOfMonthText"
-        android:scaleType="fitCenter"
-        android:layout_marginBottom="3dp"
         android:layout_alignBottom="@+id/dayOfMonthText"
+        android:layout_alignEnd="@+id/dayOfMonthText"
+        android:layout_alignStart="@+id/dayOfMonthText"
+        android:layout_marginBottom="3dp"
+        android:scaleType="fitCenter"
         app:srcCompat="@drawable/ic_vector_circle" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/darker_gray"
         android:layout_alignBottom="@+id/dayOfMonthText"
         android:layout_alignRight="@+id/dayOfMonthText"
         android:layout_marginRight="3dp"
-        android:textSize="10.5sp"
-        android:text="30"/>
+        android:text="1"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="10.5sp" />
 </RelativeLayout>
 
