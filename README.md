@@ -19,7 +19,7 @@ allprojects {
 Step 2. Add the dependency
 ```groovy
 dependencies {
-    implementation 'com.github.ali-sardari:PersianRangeDatePicker:1.0.2'
+    implementation 'com.github.ali-sardari:PersianRangeDatePicker:1.1.0'
 }
 ```
 
@@ -29,7 +29,6 @@ Then in your Java Code, you use it like below.
 DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
 datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
 datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
-datePickerDialog.setSelectableDaysCount(5);
 datePickerDialog.setCanceledOnTouchOutside(true);
 datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
         @Override
