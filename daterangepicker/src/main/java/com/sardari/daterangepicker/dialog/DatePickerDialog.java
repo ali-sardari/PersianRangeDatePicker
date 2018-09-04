@@ -113,7 +113,7 @@ public class DatePickerDialog extends Dialog {
         calendar.setMaxDate(maxDate);
         calendar.setMinDate(minDate);
         calendar.setShowGregorianDate(showGregorianDate);
-        calendar.setShouldEnabledTime(false);
+        calendar.setShouldEnabledTime(enableTimePicker);
 
         calendar.build();
 
@@ -213,6 +213,19 @@ public class DatePickerDialog extends Dialog {
         this.showGregorianDate = showGregorianDate;
     }
     //endregion
+
+    //region timePicker -> Default = false
+    private boolean enableTimePicker = false;
+
+    public boolean isEnableTimePicker() {
+        return enableTimePicker;
+    }
+
+    public void setEnableTimePicker(boolean enableTimePicker) {
+        this.enableTimePicker = enableTimePicker;
+    }
+    //endregion
+
 
     //region Listener -> OnSingleDateSelected & OnRangeDateSelected
     //region OnSingleDateSelected -> Getter/Setter

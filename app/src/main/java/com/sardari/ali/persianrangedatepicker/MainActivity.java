@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
 //        datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
 //        datePickerDialog.setSelectionMode(selectionMode);
-//        datePickerDialog.setSelectableDaysCount(5);
+//        datePickerDialog.setEnableTimePicker(true);
         datePickerDialog.setCanceledOnTouchOutside(true);
         datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
             @Override
@@ -49,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
                 txtEndDate.setText(endDate.getPersianShortDateTime());
             }
         });
-
         datePickerDialog.showDialog();
     }
 

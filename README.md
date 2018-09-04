@@ -26,7 +26,6 @@ Then in your Java Code, you use it like below.
 
 ```java
 DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
-datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
 datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
 datePickerDialog.setCanceledOnTouchOutside(true);
 datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
