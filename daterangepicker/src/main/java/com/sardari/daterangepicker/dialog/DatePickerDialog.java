@@ -157,10 +157,9 @@ public class DatePickerDialog extends Dialog {
     }
 
     public void setSelectionMode(DateRangeCalendarView.SelectionMode selectionMode) {
-        this.selectionMode = selectionMode;
-
-        if (selectionMode != null)
-            calendar.setSelectionMode(selectionMode.getValue());
+        if (selectionMode != null) {
+            this.selectionMode = selectionMode;
+        }
     }
     //endregion
 
@@ -185,7 +184,7 @@ public class DatePickerDialog extends Dialog {
 
     public void setMinDate(PersianCalendar minDate) {
         this.minDate = minDate;
-        calendar.setMinDate(minDate);
+//        calendar.setMinDate(minDate);
     }
     //endregion
 
@@ -198,7 +197,7 @@ public class DatePickerDialog extends Dialog {
 
     public void setMaxDate(PersianCalendar maxDate) {
         this.maxDate = maxDate;
-        calendar.setMaxDate(maxDate);
+//        calendar.setMaxDate(maxDate);
     }
     //endregion
 

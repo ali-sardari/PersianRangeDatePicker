@@ -31,16 +31,15 @@ public class MainActivity extends AppCompatActivity {
         btn_ShowDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDatePicker(DateRangeCalendarView.SelectionMode.None);
+                ShowDatePicker();
             }
         });
     }
 
-    private void ShowDatePicker(DateRangeCalendarView.SelectionMode selectionMode) {
+    private void ShowDatePicker() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
-//        datePickerDialog.setCalendarType(DateRangeCalendarView.CalendarType.Persian);
-//        datePickerDialog.setSelectionMode(selectionMode);
-//        datePickerDialog.setEnableTimePicker(true);
+        datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
+        datePickerDialog.setEnableTimePicker(false);
         datePickerDialog.setCanceledOnTouchOutside(true);
         datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
             @Override
@@ -49,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
                 txtEndDate.setText(endDate.getPersianShortDateTime());
             }
         });
+
         datePickerDialog.showDialog();
     }
 
