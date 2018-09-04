@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+//        datePickerDialog.setAcceptButtonColor(ContextCompat.getColor(this, R.color.colorAccent));
         datePickerDialog.showDialog();
     }
 

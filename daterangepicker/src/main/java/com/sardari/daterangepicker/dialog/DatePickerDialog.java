@@ -3,6 +3,7 @@ package com.sardari.daterangepicker.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,6 +48,8 @@ public class DatePickerDialog extends Dialog {
         setContentView(R.layout.dialog_date_picker);
 
         btn_Accept = findViewById(R.id.btn_Accept);
+
+        acceptButtonColor = ContextCompat.getColor(mContext, R.color.buttonBackgroundColor);
 //        calendar = findViewById(R.id.calendar);
         //endregion
     }
@@ -106,6 +109,7 @@ public class DatePickerDialog extends Dialog {
             }
         });
 
+        //config
         calendar.setSelectionMode(selectionMode.getValue());
         calendar.setDisableDaysAgo(disableDaysAgo);
         calendar.setTypeface(typeface);
@@ -115,6 +119,23 @@ public class DatePickerDialog extends Dialog {
         calendar.setShowGregorianDate(showGregorianDate);
         calendar.setShouldEnabledTime(enableTimePicker);
 
+        //theme
+        calendar.setHeaderBackgroundColor(headerBackgroundColor);
+        calendar.setSelectedDateCircleColor(selectedDateCircleColor);
+        calendar.setWeekColor(weekColor);
+        calendar.setRangeStripColor(rangeStripColor);
+        calendar.setSelectedDateColor(selectedDateColor);
+        calendar.setDefaultDateColor(defaultDateColor);
+        calendar.setDisableDateColor(disableDateColor);
+        calendar.setRangeDateColor(rangeDateColor);
+        calendar.setHolidayColor(holidayColor);
+        calendar.setTodayColor(todayColor);
+        calendar.setTextSizeTitle(textSizeTitle);
+        calendar.setTextSizeWeek(textSizeWeek);
+        calendar.setTextSizeDate(textSizeDate);
+
+        //init
+        calendar.setAttributes();
         calendar.build();
 
         ViewGroup insertPoint = findViewById(R.id.content);
@@ -124,6 +145,8 @@ public class DatePickerDialog extends Dialog {
         if (selectionMode.getValue() == DateRangeCalendarView.SelectionMode.None.getValue()) {
             btn_Accept.setVisibility(View.GONE);
         }
+
+        btn_Accept.setBackgroundColor(acceptButtonColor);
 
         this.show();
     }
@@ -251,6 +274,126 @@ public class DatePickerDialog extends Dialog {
     }
     //endregion
     //endregion
+
+
+    //region theme
+    private int acceptButtonColor, headerBackgroundColor, weekColor, rangeStripColor, selectedDateCircleColor, selectedDateColor, defaultDateColor, disableDateColor, rangeDateColor, holidayColor, todayColor;
+    private float textSizeTitle, textSizeWeek, textSizeDate;
+
+    public int getAcceptButtonColor() {
+        return acceptButtonColor;
+    }
+
+    public void setAcceptButtonColor(int acceptButtonColor) {
+        this.acceptButtonColor = acceptButtonColor;
+    }
+
+    public int getHeaderBackgroundColor() {
+        return headerBackgroundColor;
+    }
+
+    public void setHeaderBackgroundColor(int headerBackgroundColor) {
+        this.headerBackgroundColor = headerBackgroundColor;
+    }
+
+    public int getWeekColor() {
+        return weekColor;
+    }
+
+    public void setWeekColor(int weekColor) {
+        this.weekColor = weekColor;
+    }
+
+    public int getRangeStripColor() {
+        return rangeStripColor;
+    }
+
+    public void setRangeStripColor(int rangeStripColor) {
+        this.rangeStripColor = rangeStripColor;
+    }
+
+    public int getSelectedDateCircleColor() {
+        return selectedDateCircleColor;
+    }
+
+    public void setSelectedDateCircleColor(int selectedDateCircleColor) {
+        this.selectedDateCircleColor = selectedDateCircleColor;
+    }
+
+    public int getSelectedDateColor() {
+        return selectedDateColor;
+    }
+
+    public void setSelectedDateColor(int selectedDateColor) {
+        this.selectedDateColor = selectedDateColor;
+    }
+
+    public int getDefaultDateColor() {
+        return defaultDateColor;
+    }
+
+    public void setDefaultDateColor(int defaultDateColor) {
+        this.defaultDateColor = defaultDateColor;
+    }
+
+    public int getDisableDateColor() {
+        return disableDateColor;
+    }
+
+    public void setDisableDateColor(int disableDateColor) {
+        this.disableDateColor = disableDateColor;
+    }
+
+    public int getRangeDateColor() {
+        return rangeDateColor;
+    }
+
+    public void setRangeDateColor(int rangeDateColor) {
+        this.rangeDateColor = rangeDateColor;
+    }
+
+    public int getHolidayColor() {
+        return holidayColor;
+    }
+
+    public void setHolidayColor(int holidayColor) {
+        this.holidayColor = holidayColor;
+    }
+
+    public int getTodayColor() {
+        return todayColor;
+    }
+
+    public void setTodayColor(int todayColor) {
+        this.todayColor = todayColor;
+    }
+
+    public float getTextSizeTitle() {
+        return textSizeTitle;
+    }
+
+    public void setTextSizeTitle(float textSizeTitle) {
+        this.textSizeTitle = textSizeTitle;
+    }
+
+    public float getTextSizeWeek() {
+        return textSizeWeek;
+    }
+
+    public void setTextSizeWeek(float textSizeWeek) {
+        this.textSizeWeek = textSizeWeek;
+    }
+
+    public float getTextSizeDate() {
+        return textSizeDate;
+    }
+
+    public void setTextSizeDate(float textSizeDate) {
+        this.textSizeDate = textSizeDate;
+    }
+
+    //endregion
+
     //endregion
 
     //region Listeners -> Interface

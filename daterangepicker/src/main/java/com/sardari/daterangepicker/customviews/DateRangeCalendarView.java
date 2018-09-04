@@ -44,6 +44,7 @@ public class DateRangeCalendarView extends LinearLayout {
     private PersianCalendar currentCalendarMonth, minSelectedDate, maxSelectedDate;
     private ArrayList<Integer> selectedDatesRange = new ArrayList<>();
     private Typeface typeface;
+    private RelativeLayout rlHeaderCalendar;
 
     private static final int STRIP_TYPE_NONE = 0;
     private static final int STRIP_TYPE_LEFT = 1;
@@ -122,7 +123,7 @@ public class DateRangeCalendarView extends LinearLayout {
         todayColor = ContextCompat.getColor(mContext, R.color.today_date_color);
     }
 
-    private void setAttributes() {
+    public void setAttributes() {
         TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.DateRangeCalendarView, 0, 0);
         try {
             shouldEnabledTime = ta.getBoolean(R.styleable.DateRangeCalendarView_enable_time_selection, false);
@@ -165,8 +166,7 @@ public class DateRangeCalendarView extends LinearLayout {
         imgVNavLeft = mainView.findViewById(R.id.imgVNavLeft);
         imgVNavRight = mainView.findViewById(R.id.imgVNavRight);
 
-        RelativeLayout rlHeaderCalendar = mainView.findViewById(R.id.rlHeaderCalendar);
-        rlHeaderCalendar.setBackgroundColor(headerBackgroundColor);
+        rlHeaderCalendar = mainView.findViewById(R.id.rlHeaderCalendar);
 
         setListeners();
 
@@ -717,10 +717,9 @@ public class DateRangeCalendarView extends LinearLayout {
     //---------------------------------------------------------------------------------------------
     //region Properties
     public void build() {
-
         drawCalendarForMonth(getCurrentMonth(currentDate));
-
         setWeekTitleColor();
+        rlHeaderCalendar.setBackgroundColor(headerBackgroundColor);
     }
 
     //region selectionMode -> Getter/Setter
@@ -814,89 +813,6 @@ public class DateRangeCalendarView extends LinearLayout {
     }
 
     //endregion
-    //--------------------------------------------------------------------------------------------
-    //region theme
-    public int getHeaderBackgroundColor() {
-        return headerBackgroundColor;
-    }
-
-    public void setHeaderBackgroundColor(int headerBackgroundColor) {
-        this.headerBackgroundColor = headerBackgroundColor;
-    }
-
-    public int getWeekColor() {
-        return weekColor;
-    }
-
-    public void setWeekColor(int weekColor) {
-        this.weekColor = weekColor;
-    }
-
-    public int getRangeStripColor() {
-        return rangeStripColor;
-    }
-
-    public void setRangeStripColor(int rangeStripColor) {
-        this.rangeStripColor = rangeStripColor;
-    }
-
-    public int getSelectedDateCircleColor() {
-        return selectedDateCircleColor;
-    }
-
-    public void setSelectedDateCircleColor(int selectedDateCircleColor) {
-        this.selectedDateCircleColor = selectedDateCircleColor;
-    }
-
-    public int getSelectedDateColor() {
-        return selectedDateColor;
-    }
-
-    public void setSelectedDateColor(int selectedDateColor) {
-        this.selectedDateColor = selectedDateColor;
-    }
-
-    public int getDefaultDateColor() {
-        return defaultDateColor;
-    }
-
-    public void setDefaultDateColor(int defaultDateColor) {
-        this.defaultDateColor = defaultDateColor;
-    }
-
-    public int getDisableDateColor() {
-        return disableDateColor;
-    }
-
-    public void setDisableDateColor(int disableDateColor) {
-        this.disableDateColor = disableDateColor;
-    }
-
-    public int getRangeDateColor() {
-        return rangeDateColor;
-    }
-
-    public void setRangeDateColor(int rangeDateColor) {
-        this.rangeDateColor = rangeDateColor;
-    }
-
-    public int getHolidayColor() {
-        return holidayColor;
-    }
-
-    public void setHolidayColor(int holidayColor) {
-        this.holidayColor = holidayColor;
-
-        setAttributes();
-    }
-
-    public int getTodayColor() {
-        return todayColor;
-    }
-
-    public void setTodayColor(int todayColor) {
-        this.todayColor = todayColor;
-    }
 
     public boolean isShouldEnabledTime() {
         return shouldEnabledTime;
@@ -906,12 +822,95 @@ public class DateRangeCalendarView extends LinearLayout {
         this.shouldEnabledTime = shouldEnabledTime;
     }
 
+    //--------------------------------------------------------------------------------------------
+    //region theme
+    public int getHeaderBackgroundColor() {
+        return headerBackgroundColor;
+    }
+
+    public void setHeaderBackgroundColor(int headerBackgroundColor) {
+        this.headerBackgroundColor = headerBackgroundColor != 0 ? headerBackgroundColor : this.headerBackgroundColor;
+    }
+
+    public int getWeekColor() {
+        return weekColor;
+    }
+
+    public void setWeekColor(int weekColor) {
+        this.weekColor = weekColor != 0 ? weekColor : this.weekColor;
+    }
+
+    public int getRangeStripColor() {
+        return rangeStripColor;
+    }
+
+    public void setRangeStripColor(int rangeStripColor) {
+        this.rangeStripColor = rangeStripColor != 0 ? rangeStripColor : this.rangeStripColor;
+    }
+
+    public int getSelectedDateCircleColor() {
+        return selectedDateCircleColor;
+    }
+
+    public void setSelectedDateCircleColor(int selectedDateCircleColor) {
+        this.selectedDateCircleColor = selectedDateCircleColor != 0 ? selectedDateCircleColor : this.selectedDateCircleColor;
+    }
+
+    public int getSelectedDateColor() {
+        return selectedDateColor;
+    }
+
+    public void setSelectedDateColor(int selectedDateColor) {
+        this.selectedDateColor = selectedDateColor != 0 ? selectedDateColor : this.selectedDateColor;
+    }
+
+    public int getDefaultDateColor() {
+        return defaultDateColor;
+    }
+
+    public void setDefaultDateColor(int defaultDateColor) {
+        this.defaultDateColor = defaultDateColor != 0 ? defaultDateColor : this.defaultDateColor;
+    }
+
+    public int getDisableDateColor() {
+        return disableDateColor;
+    }
+
+    public void setDisableDateColor(int disableDateColor) {
+        this.disableDateColor = disableDateColor != 0 ? disableDateColor : this.disableDateColor;
+    }
+
+    public int getRangeDateColor() {
+        return rangeDateColor;
+    }
+
+    public void setRangeDateColor(int rangeDateColor) {
+        this.rangeDateColor = rangeDateColor != 0 ? rangeDateColor : this.rangeDateColor;
+    }
+
+    public int getHolidayColor() {
+        return holidayColor;
+    }
+
+    public void setHolidayColor(int holidayColor) {
+        this.holidayColor = holidayColor != 0 ? holidayColor : this.holidayColor;
+    }
+
+    public int getTodayColor() {
+        return todayColor;
+    }
+
+    public void setTodayColor(int todayColor) {
+        this.todayColor = todayColor != 0 ? todayColor : this.todayColor;
+    }
+
+
     public float getTextSizeTitle() {
         return textSizeTitle;
     }
 
     public void setTextSizeTitle(float textSizeTitle) {
-        this.textSizeTitle = textSizeTitle;
+        this.textSizeTitle = textSizeTitle != 0 ? textSizeTitle : this.textSizeTitle;
     }
 
     public float getTextSizeWeek() {
@@ -919,7 +918,7 @@ public class DateRangeCalendarView extends LinearLayout {
     }
 
     public void setTextSizeWeek(float textSizeWeek) {
-        this.textSizeWeek = textSizeWeek;
+        this.textSizeWeek = textSizeWeek != 0 ? textSizeWeek : this.textSizeWeek;
     }
 
     public float getTextSizeDate() {
@@ -927,7 +926,7 @@ public class DateRangeCalendarView extends LinearLayout {
     }
 
     public void setTextSizeDate(float textSizeDate) {
-        this.textSizeDate = textSizeDate;
+        this.textSizeDate = textSizeDate != 0 ? textSizeDate : this.textSizeDate;
     }
 
     //endregion
