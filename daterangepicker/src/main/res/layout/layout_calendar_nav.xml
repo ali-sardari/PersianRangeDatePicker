@@ -4,7 +4,7 @@
     android:id="@+id/rlHeaderCalendar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/header_color">
+    android:background="@color/headerBackgroundColor">
 
     <android.support.v7.widget.AppCompatImageView
         android:id="@+id/imgVNavLeft"

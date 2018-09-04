@@ -1,15 +1,12 @@
 package com.sardari.daterangepicker.customviews;
 
-import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
-import android.support.annotation.ColorInt;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,8 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sardari.daterangepicker.R;
-import com.sardari.daterangepicker.dialog_fragment.TimePickerDialog;
+import com.sardari.daterangepicker.dialog.TimePickerDialog;
 import com.sardari.daterangepicker.models.DayContainer;
+import com.sardari.daterangepicker.utils.FontUtils;
 import com.sardari.daterangepicker.utils.MyUtils;
 import com.sardari.daterangepicker.utils.PersianCalendar;
 
@@ -29,13 +27,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static com.sardari.daterangepicker.customviews.DateRangeCalendarView.SelectionMode.Multiple;
 import static com.sardari.daterangepicker.customviews.DateRangeCalendarView.SelectionMode.Range;
 import static com.sardari.daterangepicker.customviews.DateRangeCalendarView.SelectionMode.Single;
 
 public class DateRangeCalendarView extends LinearLayout {
     //region Fields
     private Context mContext;
+    private AttributeSet attrs;
     private LinearLayout llDaysContainer;
     private LinearLayout llTitleWeekContainer;
     private CustomTextView tvYearTitle;
@@ -51,37 +49,17 @@ public class DateRangeCalendarView extends LinearLayout {
     private static final int STRIP_TYPE_LEFT = 1;
     private static final int STRIP_TYPE_RIGHT = 2;
 
-    private int weekColor;
-    private int titleColor;
-    private int rangeStripColor;
-    private int selectedDateCircleColor;
-    private int selectedDateColor, defaultDateColor, disableDateColor, rangeDateColor, holidayColor, headerColor, todayColor;
+    private int headerBackgroundColor, weekColor, rangeStripColor, selectedDateCircleColor, selectedDateColor, defaultDateColor, disableDateColor, rangeDateColor, holidayColor, todayColor;
     private boolean shouldEnabledTime = false;
     private float textSizeTitle, textSizeWeek, textSizeDate;
     private PersianCalendar selectedCal, date;
     //endregion
 
     //region Enum
-    public enum CalendarType {
-        Persian(1),
-        Gregorian(2);
-
-        private final int value;
-
-        CalendarType(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
     public enum SelectionMode {
         Single(1),
-        Multiple(2),
-        Range(3),
-        None(4);
+        Range(2),
+        None(3);
 
         private final int value;
 
@@ -98,36 +76,85 @@ public class DateRangeCalendarView extends LinearLayout {
     //region Constructor
     public DateRangeCalendarView(Context context) {
         super(context);
-        initView(context, null);
+
+        this.mContext = context;
+        this.attrs = null;
+
+        initView();
     }
 
     public DateRangeCalendarView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        initView(context, attrs);
+
+        this.mContext = context;
+        this.attrs = attrs;
+
+        initView();
     }
 
-    public DateRangeCalendarView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        initView(context, attrs);
+    private void initView() {
+        typeface = FontUtils.Default(mContext);
+        locale = mContext.getResources().getConfiguration().locale;
+
+        setDefaultValues();
+
+        setAttributes();
+
+        init();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    public DateRangeCalendarView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-        initView(context, attrs);
+    private void setDefaultValues() {
+        textSizeTitle = getResources().getDimension(R.dimen.text_size_title);
+        textSizeWeek = getResources().getDimension(R.dimen.text_size_week);
+        textSizeDate = getResources().getDimension(R.dimen.text_size_date);
+
+        headerBackgroundColor = ContextCompat.getColor(mContext, R.color.headerBackgroundColor);
+
+        weekColor = ContextCompat.getColor(mContext, R.color.week_color);
+        selectedDateCircleColor = ContextCompat.getColor(mContext, R.color.selected_date_circle_color);
+        selectedDateColor = ContextCompat.getColor(mContext, R.color.selected_date_color);
+        defaultDateColor = ContextCompat.getColor(mContext, R.color.default_date_color);
+        rangeDateColor = ContextCompat.getColor(mContext, R.color.range_date_color);
+        disableDateColor = ContextCompat.getColor(mContext, R.color.disable_date_color);
+
+        rangeStripColor = ContextCompat.getColor(mContext, R.color.range_bg_color);
+        holidayColor = ContextCompat.getColor(mContext, R.color.holiday_date_color);
+        todayColor = ContextCompat.getColor(mContext, R.color.today_date_color);
     }
 
-    /**
-     * To initialize child views
-     *
-     * @param context      - App context
-     * @param attributeSet - Attr set
-     */
-    private void initView(Context context, AttributeSet attributeSet) {
-        mContext = context;
-        locale = context.getResources().getConfiguration().locale;
-        setAttributes(attributeSet);
+    private void setAttributes() {
+        TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.DateRangeCalendarView, 0, 0);
+        try {
+            shouldEnabledTime = ta.getBoolean(R.styleable.DateRangeCalendarView_enable_time_selection, false);
 
+            //text size
+            textSizeTitle = ta.getDimension(R.styleable.DateRangeCalendarView_text_size_title, textSizeTitle);
+            textSizeWeek = ta.getDimension(R.styleable.DateRangeCalendarView_text_size_week, textSizeWeek);
+            textSizeDate = ta.getDimension(R.styleable.DateRangeCalendarView_text_size_date, textSizeDate);
+
+            //header color
+            headerBackgroundColor = ta.getColor(R.styleable.DateRangeCalendarView_header_background_color, headerBackgroundColor);
+
+            //weekColor
+            weekColor = ta.getColor(R.styleable.DateRangeCalendarView_week_color, weekColor);
+            selectedDateCircleColor = ta.getColor(R.styleable.DateRangeCalendarView_selected_date_circle_color, selectedDateCircleColor);
+            selectedDateColor = ta.getColor(R.styleable.DateRangeCalendarView_selected_date_color, selectedDateColor);
+            defaultDateColor = ta.getColor(R.styleable.DateRangeCalendarView_default_date_color, defaultDateColor);
+            rangeDateColor = ta.getColor(R.styleable.DateRangeCalendarView_range_date_color, rangeDateColor);
+            disableDateColor = ta.getColor(R.styleable.DateRangeCalendarView_disable_date_color, disableDateColor);
+            rangeStripColor = ta.getColor(R.styleable.DateRangeCalendarView_range_color, rangeStripColor);
+            holidayColor = ta.getColor(R.styleable.DateRangeCalendarView_holidayColor, holidayColor);
+            todayColor = ta.getColor(R.styleable.DateRangeCalendarView_todayColor, todayColor);
+
+            selectionMode = ta.getInt(R.styleable.DateRangeCalendarView_selectionMode, selectionMode);
+        } catch (Exception e) {
+            Log.e("setAttributes", e.getMessage());
+        } finally {
+            ta.recycle();
+        }
+    }
+
+    private void init() {
         LayoutInflater layoutInflater = LayoutInflater.from(mContext);
 
         LinearLayout mainView = (LinearLayout) layoutInflater.inflate(R.layout.layout_calendar_month, this, true);
@@ -139,7 +166,7 @@ public class DateRangeCalendarView extends LinearLayout {
         imgVNavRight = mainView.findViewById(R.id.imgVNavRight);
 
         RelativeLayout rlHeaderCalendar = mainView.findViewById(R.id.rlHeaderCalendar);
-        rlHeaderCalendar.setBackgroundColor(headerColor);
+        rlHeaderCalendar.setBackgroundColor(headerBackgroundColor);
 
         setListeners();
 
@@ -147,61 +174,11 @@ public class DateRangeCalendarView extends LinearLayout {
             return;
         }
 
-        drawCalendarForMonth(getCurrentMonth(new PersianCalendar()));
-
-        setWeekTitleColor(weekColor);
-    }
-
-    /**
-     * To parse attributes from xml layout to configure calendar views.
-     *
-     * @param attributeSet - Attribute set
-     */
-    private void setAttributes(AttributeSet attributeSet) {
-        textSizeTitle = getResources().getDimension(R.dimen.text_size_title);
-        textSizeWeek = getResources().getDimension(R.dimen.text_size_week);
-        textSizeDate = getResources().getDimension(R.dimen.text_size_date);
-
-        weekColor = ContextCompat.getColor(mContext, R.color.week_color);
-        titleColor = ContextCompat.getColor(mContext, R.color.title_color);
-        rangeStripColor = ContextCompat.getColor(mContext, R.color.range_bg_color);
-        selectedDateCircleColor = ContextCompat.getColor(mContext, R.color.selected_date_circle_color);
-        selectedDateColor = ContextCompat.getColor(mContext, R.color.selected_date_color);
-        defaultDateColor = ContextCompat.getColor(mContext, R.color.default_date_color);
-        holidayColor = ContextCompat.getColor(mContext, R.color.holiday_date_color);
-        todayColor = ContextCompat.getColor(mContext, R.color.today_date_color);
-        rangeDateColor = ContextCompat.getColor(mContext, R.color.range_date_color);
-        disableDateColor = ContextCompat.getColor(mContext, R.color.disable_date_color);
-        headerColor = ContextCompat.getColor(mContext, R.color.header_color);
-
-
-//        if (attributeSet != null) {
-        TypedArray ta = mContext.obtainStyledAttributes(attributeSet, R.styleable.DateRangeCalendarView, 0, 0);
-        try {
-            weekColor = ta.getColor(R.styleable.DateRangeCalendarView_week_color, weekColor);
-            titleColor = ta.getColor(R.styleable.DateRangeCalendarView_title_color, titleColor);
-//            rangeStripColor = ta.getColor(R.styleable.DateRangeCalendarView_range_color, rangeStripColor);
-            selectedDateCircleColor = ta.getColor(R.styleable.DateRangeCalendarView_selected_date_circle_color, selectedDateCircleColor);
-            shouldEnabledTime = ta.getBoolean(R.styleable.DateRangeCalendarView_enable_time_selection, false);
-
-            textSizeTitle = ta.getDimension(R.styleable.DateRangeCalendarView_text_size_title, textSizeTitle);
-            textSizeWeek = ta.getDimension(R.styleable.DateRangeCalendarView_text_size_week, textSizeWeek);
-            textSizeDate = ta.getDimension(R.styleable.DateRangeCalendarView_text_size_date, textSizeDate);
-
-            selectedDateColor = ta.getColor(R.styleable.DateRangeCalendarView_selected_date_color, selectedDateColor);
-            defaultDateColor = ta.getColor(R.styleable.DateRangeCalendarView_default_date_color, defaultDateColor);
-            rangeDateColor = ta.getColor(R.styleable.DateRangeCalendarView_range_date_color, rangeDateColor);
-            disableDateColor = ta.getColor(R.styleable.DateRangeCalendarView_disable_date_color, disableDateColor);
-            headerColor = ta.getColor(R.styleable.DateRangeCalendarView_header_color, headerColor);
-
-            selectionMode = ta.getInt(R.styleable.DateRangeCalendarView_selectionMode, Single.getValue());
-        } finally {
-            ta.recycle();
-        }
-//        }
+        build();
     }
     //endregion
 
+    //region Core
     //region NavigationClickListener & dayClickListener
     private void setListeners() {
         //region imgVNavLeft.setOnClickListener
@@ -255,8 +232,13 @@ public class DateRangeCalendarView extends LinearLayout {
                     TimePickerDialog awesomeTimePickerDialog = new TimePickerDialog(mContext, mContext.getString(R.string.select_time), new TimePickerDialog.TimePickerCallback() {
                         @Override
                         public void onTimeSelected(int hours, int mins) {
+                            PersianCalendar p = (PersianCalendar) selectedCal.clone();
+
                             selectedCal.set(Calendar.HOUR, hours);
                             selectedCal.set(Calendar.MINUTE, mins);
+                            selectedCal.set(Calendar.SECOND, 0);
+                            selectedCal.set(Calendar.MILLISECOND, 0);
+                            selectedCal.setPersianDate(p.getPersianYear(), p.getPersianMonth(), p.getPersianDay());
 
                             if (calendarListener != null) {
                                 calendarListener.onDateSelected(selectedCal);
@@ -278,9 +260,6 @@ public class DateRangeCalendarView extends LinearLayout {
                     //endregion
                 }
                 //endregion
-            } else if (selectionMode == Multiple.getValue()) {
-                //region SelectionMode.Multiple
-                //endregion
             } else if (selectionMode == Range.getValue()) {
                 //region SelectionMode.Range
                 if (minSelectedDate != null) {
@@ -288,7 +267,9 @@ public class DateRangeCalendarView extends LinearLayout {
                         maxSelectedDate = selectedCal;
                         drawSelectedDateRange(minSelectedDate, maxSelectedDate);
                     } else {
-                        MyUtils.getInstance().Toast(mContext, "تاریخ برگشت را وارد کنید");
+                        if (!TextUtils.isEmpty(getMessageEnterEndDate())) {
+                            MyUtils.getInstance().Toast(mContext, getMessageEnterEndDate());
+                        }
 
                         resetAllSelectedViews();
 
@@ -298,7 +279,9 @@ public class DateRangeCalendarView extends LinearLayout {
                         makeAsSelectedDate(container, 0);
                     }
                 } else {
-                    MyUtils.getInstance().Toast(mContext, "تاریخ برگشت را وارد کنید");
+                    if (!TextUtils.isEmpty(getMessageEnterEndDate())) {
+                        MyUtils.getInstance().Toast(mContext, getMessageEnterEndDate());
+                    }
 
                     minSelectedDate = selectedCal;
                     maxSelectedDate = null;
@@ -311,10 +294,14 @@ public class DateRangeCalendarView extends LinearLayout {
                     TimePickerDialog awesomeTimePickerDialog = new TimePickerDialog(mContext, mContext.getString(R.string.select_time), new TimePickerDialog.TimePickerCallback() {
                         @Override
                         public void onTimeSelected(int hours, int mins) {
+                            PersianCalendar p = (PersianCalendar) selectedCal.clone();
+
                             selectedCal.set(Calendar.HOUR, hours);
                             selectedCal.set(Calendar.MINUTE, mins);
+                            selectedCal.set(Calendar.SECOND, 0);
+                            selectedCal.set(Calendar.MILLISECOND, 0);
+                            selectedCal.setPersianDate(p.getPersianYear(), p.getPersianMonth(), p.getPersianDay());
 
-                            Log.i("Tag", "Time: " + selectedCal.getTime().toString());
                             if (calendarListener != null && minSelectedDate != null && maxSelectedDate != null) {
                                 calendarListener.onDateRangeSelected(minSelectedDate, maxSelectedDate);
                             }
@@ -361,49 +348,46 @@ public class DateRangeCalendarView extends LinearLayout {
      *
      * @param month
      */
-    @SuppressLint("SetTextI18n")
     private void drawCalendarForMonth(PersianCalendar month) {
         tvYearTitle.setText(String.format(locale, "%s %d", month.getPersianMonthName(), month.getPersianYear()));
-
-        Log.w("TAG", "DateRangeCalendarView_drawCalendarForMonth_358-> :" + month.getPersianMonth());
 
         int _month = month.getPersianMonth() + 1;
         switch (_month) {
             case 1:
-                tvYearGeorgianTitle.setText("March - April " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "March - April %d", month.get(Calendar.YEAR)));
                 break;
             case 2:
-                tvYearGeorgianTitle.setText("April - May " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "April - May %d", month.get(Calendar.YEAR)));
                 break;
             case 3:
-                tvYearGeorgianTitle.setText("May - June " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "May - June %d", month.get(Calendar.YEAR)));
                 break;
             case 4:
-                tvYearGeorgianTitle.setText("June - July " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "June - July %d", month.get(Calendar.YEAR)));
                 break;
             case 5:
-                tvYearGeorgianTitle.setText("July - August " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "July - August %d", month.get(Calendar.YEAR)));
                 break;
             case 6:
-                tvYearGeorgianTitle.setText("August - September " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "August - September %d", month.get(Calendar.YEAR)));
                 break;
             case 7:
-                tvYearGeorgianTitle.setText("September - October " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "September - October %d", month.get(Calendar.YEAR)));
                 break;
             case 8:
-                tvYearGeorgianTitle.setText("October - November " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "October - November %d", month.get(Calendar.YEAR)));
                 break;
             case 9:
-                tvYearGeorgianTitle.setText("November - December " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "November - December %d", month.get(Calendar.YEAR)));
                 break;
             case 10:
                 tvYearGeorgianTitle.setText(String.format("December %s - January %s ", month.get(Calendar.YEAR), month.get(Calendar.YEAR) + 1));
                 break;
             case 11:
-                tvYearGeorgianTitle.setText("January - February " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "January - February %d", month.get(Calendar.YEAR)));
                 break;
             case 12:
-                tvYearGeorgianTitle.setText("February - March " + month.get(Calendar.YEAR));
+                tvYearGeorgianTitle.setText(String.format(locale, "February - March %d", month.get(Calendar.YEAR)));
                 break;
         }
 
@@ -441,15 +425,8 @@ public class DateRangeCalendarView extends LinearLayout {
      * @param calendar  - Calendar obj of specific date of the month.
      */
     private void drawDayContainer(DayContainer container, PersianCalendar calendar) {
-        int date;
-        int dateGR;
-        if (calendarType == CalendarType.Persian.getValue()) {
-            date = calendar.getPersianDay();
-            dateGR = calendar.get(Calendar.DATE);
-        } else {
-            date = calendar.getPersianDay();
-            dateGR = calendar.get(Calendar.DATE);
-        }
+        int date = calendar.getPersianDay();
+        int dateGR = calendar.get(Calendar.DATE);
 
         //----------------------------------------------------------------
         if (currentCalendarMonth.getPersianMonth() != calendar.getPersianMonth()) {
@@ -458,11 +435,11 @@ public class DateRangeCalendarView extends LinearLayout {
             disableDayContainer(container);
 //            container.tvDate.setText(String.valueOf(date));
 
-            isToday(container, calendar);
+            setToday(container, calendar);
         } else {
             int key = DayContainer.GetContainerKey(calendar);
 
-            isToday(container, calendar);
+            setToday(container, calendar);
 
             if (selectedDatesRange.indexOf(key) == 0) {
                 makeAsSelectedDate(container, STRIP_TYPE_LEFT);
@@ -487,29 +464,24 @@ public class DateRangeCalendarView extends LinearLayout {
                 disableDayContainer(container);
 //                container.tvDate.setText(String.valueOf(date));
             }
-
         }
 
         container.tvDate.setText(String.valueOf(date));
         container.tvDateGeorgian.setText(String.valueOf(dateGR));
-
+        container.tvDateGeorgian.setVisibility(showGregorianDate ? VISIBLE : GONE);
         container.rootView.setTag(DayContainer.GetContainerKey(calendar));
     }
 
     //---------------------------------------------------------------------------------------------
-    private boolean isToday(DayContainer container, PersianCalendar persianCalendar) {
-        if (getCurrentDate().compareTo(persianCalendar) == 0) {
+    private void setToday(DayContainer container, PersianCalendar persianCalendar) {
+        if (getCurrentDate().getPersianShortDate().compareTo(persianCalendar.getPersianShortDate()) == 0) {
             container.imgEvent.setVisibility(VISIBLE);
             container.imgEvent.setColorFilter(todayColor, android.graphics.PorterDuff.Mode.SRC_IN);
 //            container.tvDate.setTextColor(todayColor);
             container.tvDate.setTypeface(typeface, Typeface.BOLD);
-
-            return true;
         } else {
             container.imgEvent.setVisibility(GONE);
             container.tvDate.setTypeface(typeface, Typeface.NORMAL);
-
-            return false;
         }
     }
 
@@ -720,40 +692,39 @@ public class DateRangeCalendarView extends LinearLayout {
         }
     }
 
-    /**
-     * To set week title color
-     *
-     * @param color - resource color value
-     */
-    public void setWeekTitleColor(@ColorInt int color) {
-        weekColor = color;
+    private void setWeekTitleColor() {
         for (int i = 0; i < llTitleWeekContainer.getChildCount(); i++) {
             CustomTextView textView = (CustomTextView) llTitleWeekContainer.getChildAt(i);
-            textView.setTextColor(color);
+            textView.setTextColor(weekColor);
         }
     }
 
-    /**
-     * To apply custom fonts to all the text views
-     *
-     * @param fonts - Typeface that you want to apply
-     */
-    public void setFonts(Typeface fonts) {
-        this.typeface = fonts;
-        if (fonts != null) {
+    public void setTypeface(Typeface typeface) {
+        if (typeface != null) {
+            this.typeface = typeface;
+
             drawCalendarForMonth(currentCalendarMonth);
-            tvYearTitle.setTypeface(fonts);
+            tvYearTitle.setTypeface(this.typeface);
 
             for (int i = 0; i < llTitleWeekContainer.getChildCount(); i++) {
                 CustomTextView textView = (CustomTextView) llTitleWeekContainer.getChildAt(i);
-                textView.setTypeface(fonts);
+                textView.setTypeface(this.typeface);
             }
         }
     }
 
+    //endregion
     //---------------------------------------------------------------------------------------------
+    //region Properties
+    public void build() {
+
+        drawCalendarForMonth(getCurrentMonth(currentDate));
+
+        setWeekTitleColor();
+    }
+
     //region selectionMode -> Getter/Setter
-    private int selectionMode = SelectionMode.Single.getValue();
+    private int selectionMode = SelectionMode.Range.getValue();
 
     public int getSelectionMode() {
         return selectionMode;
@@ -761,18 +732,6 @@ public class DateRangeCalendarView extends LinearLayout {
 
     public void setSelectionMode(int selectionMode) {
         this.selectionMode = selectionMode;
-    }
-    //endregion
-
-    //region calendarType -> Getter/Setter
-    private int calendarType = CalendarType.Persian.getValue();
-
-    public int getCalendarType() {
-        return calendarType;
-    }
-
-    public void setCalendarType(int calendarType) {
-        this.calendarType = calendarType;
     }
     //endregion
 
@@ -786,12 +745,12 @@ public class DateRangeCalendarView extends LinearLayout {
     public void setCurrentDate(PersianCalendar currentDate) {
         this.currentDate = currentDate;
 
-        if (currentDate != null) {
-            currentCalendarMonth = (PersianCalendar) currentDate.clone();
-            currentCalendarMonth.setPersianDay(1);
-
-            resetAllSelectedViews();
-        }
+//        if (currentDate != null) {
+//            currentCalendarMonth = (PersianCalendar) currentDate.clone();
+//            currentCalendarMonth.setPersianDay(1);
+//
+//            resetAllSelectedViews();
+//        }
     }
     //endregion
 
@@ -831,27 +790,15 @@ public class DateRangeCalendarView extends LinearLayout {
     }
     //endregion
 
-    //region messageEnterDate
-    String messageEnterDate;
+    //region showGregorianDate -> Default = false
+    private boolean showGregorianDate = false;
 
-    public String getMessageEnterDate() {
-        return messageEnterDate;
+    public boolean isShowGregorianDate() {
+        return showGregorianDate;
     }
 
-    public void setMessageEnterDate(String messageEnterDate) {
-        this.messageEnterDate = messageEnterDate;
-    }
-    //endregion
-
-    //region messageEnterStartDate
-    String messageEnterStartDate;
-
-    public String getMessageEnterStartDate() {
-        return messageEnterStartDate;
-    }
-
-    public void setMessageEnterStartDate(String messageEnterStartDate) {
-        this.messageEnterStartDate = messageEnterStartDate;
+    public void setShowGregorianDate(boolean showGregorianDate) {
+        this.showGregorianDate = showGregorianDate;
     }
     //endregion
 
@@ -865,8 +812,126 @@ public class DateRangeCalendarView extends LinearLayout {
     public void setMessageEnterEndDate(String messageEnterEndDate) {
         this.messageEnterEndDate = messageEnterEndDate;
     }
-    //endregion
 
+    //endregion
+    //--------------------------------------------------------------------------------------------
+    //region theme
+    public int getHeaderBackgroundColor() {
+        return headerBackgroundColor;
+    }
+
+    public void setHeaderBackgroundColor(int headerBackgroundColor) {
+        this.headerBackgroundColor = headerBackgroundColor;
+    }
+
+    public int getWeekColor() {
+        return weekColor;
+    }
+
+    public void setWeekColor(int weekColor) {
+        this.weekColor = weekColor;
+    }
+
+    public int getRangeStripColor() {
+        return rangeStripColor;
+    }
+
+    public void setRangeStripColor(int rangeStripColor) {
+        this.rangeStripColor = rangeStripColor;
+    }
+
+    public int getSelectedDateCircleColor() {
+        return selectedDateCircleColor;
+    }
+
+    public void setSelectedDateCircleColor(int selectedDateCircleColor) {
+        this.selectedDateCircleColor = selectedDateCircleColor;
+    }
+
+    public int getSelectedDateColor() {
+        return selectedDateColor;
+    }
+
+    public void setSelectedDateColor(int selectedDateColor) {
+        this.selectedDateColor = selectedDateColor;
+    }
+
+    public int getDefaultDateColor() {
+        return defaultDateColor;
+    }
+
+    public void setDefaultDateColor(int defaultDateColor) {
+        this.defaultDateColor = defaultDateColor;
+    }
+
+    public int getDisableDateColor() {
+        return disableDateColor;
+    }
+
+    public void setDisableDateColor(int disableDateColor) {
+        this.disableDateColor = disableDateColor;
+    }
+
+    public int getRangeDateColor() {
+        return rangeDateColor;
+    }
+
+    public void setRangeDateColor(int rangeDateColor) {
+        this.rangeDateColor = rangeDateColor;
+    }
+
+    public int getHolidayColor() {
+        return holidayColor;
+    }
+
+    public void setHolidayColor(int holidayColor) {
+        this.holidayColor = holidayColor;
+
+        setAttributes();
+    }
+
+    public int getTodayColor() {
+        return todayColor;
+    }
+
+    public void setTodayColor(int todayColor) {
+        this.todayColor = todayColor;
+    }
+
+    public boolean isShouldEnabledTime() {
+        return shouldEnabledTime;
+    }
+
+    public void setShouldEnabledTime(boolean shouldEnabledTime) {
+        this.shouldEnabledTime = shouldEnabledTime;
+    }
+
+    public float getTextSizeTitle() {
+        return textSizeTitle;
+    }
+
+    public void setTextSizeTitle(float textSizeTitle) {
+        this.textSizeTitle = textSizeTitle;
+    }
+
+    public float getTextSizeWeek() {
+        return textSizeWeek;
+    }
+
+    public void setTextSizeWeek(float textSizeWeek) {
+        this.textSizeWeek = textSizeWeek;
+    }
+
+    public float getTextSizeDate() {
+        return textSizeDate;
+    }
+
+    public void setTextSizeDate(float textSizeDate) {
+        this.textSizeDate = textSizeDate;
+    }
+
+    //endregion
+    //--------------------------------------------------------------------------------------------
     //region Listener -> Getter/Setter
     private CalendarListener calendarListener;
 
@@ -877,6 +942,7 @@ public class DateRangeCalendarView extends LinearLayout {
     public void setCalendarListener(CalendarListener calendarListener) {
         this.calendarListener = calendarListener;
     }
+    //endregion
     //endregion
     //--------------------------------------------------------------------------------------------
 

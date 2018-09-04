@@ -1,4 +1,4 @@
-package com.sardari.daterangepicker.dialog_fragment;
+package com.sardari.daterangepicker.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

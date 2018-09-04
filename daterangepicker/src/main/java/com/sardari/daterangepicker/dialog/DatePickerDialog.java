@@ -1,15 +1,17 @@
-package com.sardari.daterangepicker.dialog_fragment;
+package com.sardari.daterangepicker.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 
 import com.sardari.daterangepicker.R;
 import com.sardari.daterangepicker.customviews.DateRangeCalendarView;
+import com.sardari.daterangepicker.utils.FontUtils;
 import com.sardari.daterangepicker.utils.MyUtils;
 import com.sardari.daterangepicker.utils.PersianCalendar;
 
@@ -21,6 +23,7 @@ public class DatePickerDialog extends Dialog {
     private DateRangeCalendarView calendar;
     private Button btn_Accept;
     private PersianCalendar date, startDate, endDate;
+    private Typeface typeface;
     //endregion
 
     public DatePickerDialog(Context context) {
@@ -30,6 +33,8 @@ public class DatePickerDialog extends Dialog {
 
         if (getWindow() != null)
             getWindow().setGravity(Gravity.CENTER);
+
+        this.typeface = FontUtils.Default(mContext);
 
         initView();
 
@@ -42,11 +47,12 @@ public class DatePickerDialog extends Dialog {
         setContentView(R.layout.dialog_date_picker);
 
         btn_Accept = findViewById(R.id.btn_Accept);
-        calendar = findViewById(R.id.calendar);
+//        calendar = findViewById(R.id.calendar);
         //endregion
     }
 
     public void showDialog() {
+        calendar = new DateRangeCalendarView(mContext);
         calendar.setCalendarListener(new DateRangeCalendarView.CalendarListener() {
             @Override
             public void onDateSelected(PersianCalendar _date) {
@@ -100,27 +106,51 @@ public class DatePickerDialog extends Dialog {
             }
         });
 
+        calendar.setSelectionMode(selectionMode.getValue());
+        calendar.setDisableDaysAgo(disableDaysAgo);
+        calendar.setTypeface(typeface);
+        calendar.setCurrentDate(currentDate);
         calendar.setMaxDate(maxDate);
         calendar.setMinDate(minDate);
-        calendar.setCurrentDate(currentDate);
-        calendar.setCalendarType(calendarType.getValue());
-        calendar.setSelectionMode(selectionMode.getValue());
-        calendar.setDisableDaysAgo(true);
+        calendar.setShowGregorianDate(showGregorianDate);
+        calendar.setShouldEnabledTime(false);
+
+        calendar.build();
+
+        ViewGroup insertPoint = findViewById(R.id.content);
+        insertPoint.addView(calendar);
+
+
+        if (selectionMode.getValue() == DateRangeCalendarView.SelectionMode.None.getValue()) {
+            btn_Accept.setVisibility(View.GONE);
+        }
 
         this.show();
     }
 
     //region Properties
-    //region Typeface -> Getter/Setter
+    //region DisableDaysAgo -> Default = True
+    private boolean disableDaysAgo = true;
+
+    public boolean isDisableDaysAgo() {
+        return disableDaysAgo;
+    }
+
+    public void setDisableDaysAgo(boolean disableDaysAgo) {
+        this.disableDaysAgo = disableDaysAgo;
+    }
+    //endregion
+
+    //region Typeface -> Default = IranYekan
     public void setTypeface(Typeface typeface) {
         if (typeface != null) {
-            calendar.setFonts(typeface);
+            this.typeface = typeface;
         }
     }
     //endregion
 
-    //region SelectionMode -> Getter/Setter {Single(1),Multiple(2),Range(3),None(4)}
-    private DateRangeCalendarView.SelectionMode selectionMode = DateRangeCalendarView.SelectionMode.Single;
+    //region SelectionMode -> Default = Range | Enum -> {Single(1),Range(2),None(3)}
+    private DateRangeCalendarView.SelectionMode selectionMode = DateRangeCalendarView.SelectionMode.Range;
 
     public DateRangeCalendarView.SelectionMode getSelectionMode() {
         return selectionMode;
@@ -134,22 +164,8 @@ public class DatePickerDialog extends Dialog {
     }
     //endregion
 
-    //region CalendarType -> Getter/Setter { Persian(1),Gregorian(2)}
-    private DateRangeCalendarView.CalendarType calendarType = DateRangeCalendarView.CalendarType.Persian;
-
-    public DateRangeCalendarView.CalendarType getCalendarType() {
-        return calendarType;
-    }
-
-    public void setCalendarType(DateRangeCalendarView.CalendarType calendarType) {
-        this.calendarType = calendarType;
-
-        calendar.setCalendarType(calendarType.getValue());
-    }
-    //endregion
-
-    //region currentDate -> Getter/Setter
-    private PersianCalendar currentDate;
+    //region CurrentDate -> Default = Today
+    private PersianCalendar currentDate = new PersianCalendar();
 
     public PersianCalendar getCurrentDate() {
         return currentDate;
@@ -157,11 +173,10 @@ public class DatePickerDialog extends Dialog {
 
     public void setCurrentDate(PersianCalendar currentDate) {
         this.currentDate = currentDate;
-        calendar.setCurrentDate(currentDate);
     }
     //endregion
 
-    //region MinDate -> Getter/Setter
+    //region MinDate -> Default = Today
     private PersianCalendar minDate;
 
     public PersianCalendar getMinDate() {
@@ -174,7 +189,7 @@ public class DatePickerDialog extends Dialog {
     }
     //endregion
 
-    //region MaxDate -> Getter/Setter
+    //region MaxDate -> Default = Today + 1 year
     private PersianCalendar maxDate;
 
     public PersianCalendar getMaxDate() {
@@ -187,15 +202,15 @@ public class DatePickerDialog extends Dialog {
     }
     //endregion
 
-    //region SelectableDaysCount -> Getter/Setter
-    private int selectableDaysCount;
+    //region showGregorianDate -> Default = false
+    private boolean showGregorianDate = false;
 
-    public int getSelectableDaysCount() {
-        return selectableDaysCount;
+    public boolean isShowGregorianDate() {
+        return showGregorianDate;
     }
 
-    public void setSelectableDaysCount(int selectableDaysCount) {
-        this.selectableDaysCount = selectableDaysCount;
+    public void setShowGregorianDate(boolean showGregorianDate) {
+        this.showGregorianDate = showGregorianDate;
     }
     //endregion
 
