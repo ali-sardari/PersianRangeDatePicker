@@ -51,7 +51,7 @@ public class DateRangeCalendarView extends LinearLayout {
     private static final int STRIP_TYPE_RIGHT = 2;
 
     private int headerBackgroundColor, weekColor, rangeStripColor, selectedDateCircleColor, selectedDateColor, defaultDateColor, disableDateColor, rangeDateColor, holidayColor, todayColor;
-    private boolean shouldEnabledTime = false;
+    private boolean shouldEnabledTime = true;
     private float textSizeTitle, textSizeWeek, textSizeDate;
     private PersianCalendar selectedCal, date;
     //endregion
@@ -105,9 +105,12 @@ public class DateRangeCalendarView extends LinearLayout {
     }
 
     private void setDefaultValues() {
-        textSizeTitle = getResources().getDimension(R.dimen.text_size_title);
-        textSizeWeek = getResources().getDimension(R.dimen.text_size_week);
-        textSizeDate = getResources().getDimension(R.dimen.text_size_date);
+//        textSizeTitle = getResources().getDimension(R.dimen.text_size_title);
+//        textSizeWeek = getResources().getDimension(R.dimen.text_size_week);
+//        textSizeDate = getResources().getDimension(R.dimen.text_size_date);
+        textSizeTitle = 10.0f;
+        textSizeWeek = 12.0f;
+        textSizeDate = 14.0f;
 
         headerBackgroundColor = ContextCompat.getColor(mContext, R.color.headerBackgroundColor);
 
@@ -126,7 +129,7 @@ public class DateRangeCalendarView extends LinearLayout {
     public void setAttributes() {
         TypedArray ta = mContext.obtainStyledAttributes(attrs, R.styleable.DateRangeCalendarView, 0, 0);
         try {
-            shouldEnabledTime = ta.getBoolean(R.styleable.DateRangeCalendarView_enable_time_selection, false);
+            shouldEnabledTime = ta.getBoolean(R.styleable.DateRangeCalendarView_enable_time_selection, shouldEnabledTime);
 
             //text size
             textSizeTitle = ta.getDimension(R.styleable.DateRangeCalendarView_text_size_title, textSizeTitle);
@@ -290,6 +293,8 @@ public class DateRangeCalendarView extends LinearLayout {
                 }
 
                 if (shouldEnabledTime) {
+                    Log.w("TAG", "DateRangeCalendarView_onClick_296-> :" );
+
                     //region shouldEnabledTime
                     TimePickerDialog awesomeTimePickerDialog = new TimePickerDialog(mContext, mContext.getString(R.string.select_time), new TimePickerDialog.TimePickerCallback() {
                         @Override
@@ -349,6 +354,8 @@ public class DateRangeCalendarView extends LinearLayout {
      * @param month
      */
     private void drawCalendarForMonth(PersianCalendar month) {
+        tvYearTitle.setTextSize(textSizeTitle);
+
         tvYearTitle.setText(String.format(locale, "%s %d", month.getPersianMonthName(), month.getPersianYear()));
 
         int _month = month.getPersianMonth() + 1;
@@ -410,6 +417,8 @@ public class DateRangeCalendarView extends LinearLayout {
                 if (typeface != null) {
                     container.tvDate.setTypeface(typeface);
                 }
+
+                container.tvDate.setTextSize(textSizeDate);
 
                 drawDayContainer(container, month);
 
@@ -696,6 +705,7 @@ public class DateRangeCalendarView extends LinearLayout {
         for (int i = 0; i < llTitleWeekContainer.getChildCount(); i++) {
             CustomTextView textView = (CustomTextView) llTitleWeekContainer.getChildAt(i);
             textView.setTextColor(weekColor);
+            textView.setTextSize(textSizeWeek);
         }
     }
 
@@ -919,6 +929,8 @@ public class DateRangeCalendarView extends LinearLayout {
 
     public void setTextSizeWeek(float textSizeWeek) {
         this.textSizeWeek = textSizeWeek != 0 ? textSizeWeek : this.textSizeWeek;
+
+
     }
 
     public float getTextSizeDate() {

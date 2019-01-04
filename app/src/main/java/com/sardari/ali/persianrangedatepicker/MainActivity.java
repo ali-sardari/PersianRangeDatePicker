@@ -40,6 +40,10 @@ public class MainActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
         datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
         datePickerDialog.setEnableTimePicker(false);
+//        datePickerDialog.setShowGregorianDate(true);
+        datePickerDialog.setTextSizeTitle(18.0f);
+        datePickerDialog.setTextSizeWeek(12.0f);
+        datePickerDialog.setTextSizeDate(14.0f);
         datePickerDialog.setCanceledOnTouchOutside(true);
         datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
             @Override
@@ -48,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
                 txtEndDate.setText(endDate.getPersianShortDateTime());
             }
         });
-
 //        datePickerDialog.setAcceptButtonColor(ContextCompat.getColor(this, R.color.colorAccent));
         datePickerDialog.showDialog();
     }
+}
 
 
 //    private void ShowTimePicker() {
@@ -77,5 +81,3 @@ public class MainActivity extends AppCompatActivity {
 //
 //        timePickerDialog.showDialog();
 //    }
-
-}
