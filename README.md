@@ -1,9 +1,6 @@
 # PersianRangeDatePicker
 
-![](https://github.com/ali-sardari/PersianRangeDatePicker/blob/master/images/range_date_picker2.png | width=100)
-
-
-![Date Picker](https://github.com/ali-sardari/PersianRangeDatePicker/blob/master/images/range_date_picker2.png =400x822)
+![Date Picker](https://github.com/ali-sardari/PersianRangeDatePicker/blob/master/images/range_date_picker2.png | width=100)
 
 Usages
 Use this dependency in your build.gradle file to reference this library in your project
