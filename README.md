@@ -27,6 +27,11 @@ Then in your Java Code, you use it like below.
 ```java
 DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
 datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
+//datePickerDialog.setEnableTimePicker(true);
+//datePickerDialog.setShowGregorianDate(true);
+datePickerDialog.setTextSizeTitle(10.0f);
+datePickerDialog.setTextSizeWeek(12.0f);
+datePickerDialog.setTextSizeDate(14.0f);
 datePickerDialog.setCanceledOnTouchOutside(true);
 datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
         @Override

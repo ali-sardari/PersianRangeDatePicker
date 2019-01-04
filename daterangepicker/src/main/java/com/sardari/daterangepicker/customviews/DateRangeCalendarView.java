@@ -51,7 +51,7 @@ public class DateRangeCalendarView extends LinearLayout {
     private static final int STRIP_TYPE_RIGHT = 2;
 
     private int headerBackgroundColor, weekColor, rangeStripColor, selectedDateCircleColor, selectedDateColor, defaultDateColor, disableDateColor, rangeDateColor, holidayColor, todayColor;
-    private boolean shouldEnabledTime = true;
+    private boolean shouldEnabledTime = false;
     private float textSizeTitle, textSizeWeek, textSizeDate;
     private PersianCalendar selectedCal, date;
     //endregion

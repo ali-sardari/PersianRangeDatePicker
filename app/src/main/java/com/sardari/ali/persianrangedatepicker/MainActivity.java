@@ -39,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
     private void ShowDatePicker() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
         datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
-        datePickerDialog.setEnableTimePicker(false);
+//        datePickerDialog.setEnableTimePicker(true);
 //        datePickerDialog.setShowGregorianDate(true);
-        datePickerDialog.setTextSizeTitle(18.0f);
+        datePickerDialog.setTextSizeTitle(10.0f);
         datePickerDialog.setTextSizeWeek(12.0f);
         datePickerDialog.setTextSizeDate(14.0f);
         datePickerDialog.setCanceledOnTouchOutside(true);
