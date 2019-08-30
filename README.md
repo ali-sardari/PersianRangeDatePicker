@@ -1,5 +1,4 @@
 # PersianRangeDatePicker
-Compress video and photo
 [![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)
 [![](https://jitpack.io/v/ali-sardari/PersianRangeDatePicker.svg)](https://jitpack.io/#ali-sardari/PersianRangeDatePicker)
 
