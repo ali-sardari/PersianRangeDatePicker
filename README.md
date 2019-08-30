@@ -1,4 +1,8 @@
 # PersianRangeDatePicker
+Compress video and photo
+[![API](https://img.shields.io/badge/API-17%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=17)
+[![](https://jitpack.io/v/ali-sardari/PersianRangeDatePicker.svg)](https://jitpack.io/#ali-sardari/PersianRangeDatePicker)
+
 
 ![Date Picker](https://github.com/ali-sardari/PersianRangeDatePicker/blob/master/images/range_date_picker2.jpg)
 Usages
@@ -17,7 +21,7 @@ allprojects {
 Step 2. Add the dependency
 ```groovy
 dependencies {
-    implementation 'com.github.ali-sardari:PersianRangeDatePicker:1.2.0'
+    implementation 'com.github.ali-sardari:PersianRangeDatePicker:1.2.1'
 }
 ```
 
