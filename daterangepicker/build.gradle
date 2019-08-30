@@ -3,15 +3,19 @@ apply plugin: 'com.github.dcendents.android-maven'
 
 group = 'com.github.persianrangedatepicker'
 
+def appConfig = rootProject.ext.configuration
+
 android {
-    compileSdkVersion 28
-    buildToolsVersion '28.0.3'
-    flavorDimensions "default"
+    compileSdkVersion appConfig.compileSdkVersion
+    buildToolsVersion appConfig.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 17
-        versionCode 1
-        versionName "1.0.1"
+        minSdkVersion appConfig.minSdkVersion
+        targetSdkVersion appConfig.targetSdkVersion
+
+        versionCode appConfig.versionCode
+        versionName appConfig.versionName
+
         vectorDrawables.useSupportLibrary = true
     }
 }

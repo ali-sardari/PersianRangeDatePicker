@@ -1,13 +1,23 @@
 apply plugin: 'com.android.application'
 
+def appConfig = rootProject.ext.configuration
+
 android {
-    compileSdkVersion 28
+    compileSdkVersion appConfig.compileSdkVersion
+    buildToolsVersion appConfig.buildToolsVersion
+
     defaultConfig {
-        applicationId "com.sardari.persianrangedatepicker"
-        minSdkVersion 17
-        versionCode 1
-        versionName "1.0"
+        applicationId appConfig.applicationId
+
+        minSdkVersion appConfig.minSdkVersion
+        targetSdkVersion appConfig.targetSdkVersion
+
+        versionCode appConfig.versionCode
+        versionName appConfig.versionName
+
+        vectorDrawables.useSupportLibrary = true
     }
+
     buildTypes {
         release {
             minifyEnabled false

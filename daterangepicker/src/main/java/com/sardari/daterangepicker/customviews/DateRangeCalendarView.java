@@ -183,21 +183,32 @@ public class DateRangeCalendarView extends LinearLayout {
 
     //region Core
     //region NavigationClickListener & dayClickListener
+    private void nextMonth() {
+        currentCalendarMonth.setPersianMonth(currentCalendarMonth.getPersianMonth() + 1);
+        currentCalendarMonth.setPersianDay(1);
+
+        drawCalendarForMonth(currentCalendarMonth);
+    }
+
+    private void prevMonth() {
+        if (currentCalendarMonth.getPersianMonth() == 0) {
+            currentCalendarMonth.setPersianYear(currentCalendarMonth.getPersianYear() - 1);
+            currentCalendarMonth.setPersianMonth(11);
+        } else {
+            currentCalendarMonth.setPersianMonth(currentCalendarMonth.getPersianMonth() - 1);
+        }
+
+        currentCalendarMonth.setPersianDay(1);
+
+        drawCalendarForMonth(currentCalendarMonth);
+    }
+
     private void setListeners() {
         //region imgVNavLeft.setOnClickListener
         imgVNavLeft.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentCalendarMonth.getPersianMonth() == 0) {
-                    currentCalendarMonth.setPersianYear(currentCalendarMonth.getPersianYear() - 1);
-                    currentCalendarMonth.setPersianMonth(11);
-                } else {
-                    currentCalendarMonth.setPersianMonth(currentCalendarMonth.getPersianMonth() - 1);
-                }
-
-                currentCalendarMonth.setPersianDay(1);
-
-                drawCalendarForMonth(currentCalendarMonth);
+                nextMonth();
             }
         });
         //endregion
@@ -206,10 +217,7 @@ public class DateRangeCalendarView extends LinearLayout {
         imgVNavRight.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                currentCalendarMonth.setPersianMonth(currentCalendarMonth.getPersianMonth() + 1);
-                currentCalendarMonth.setPersianDay(1);
-
-                drawCalendarForMonth(currentCalendarMonth);
+                prevMonth();
             }
         });
         //endregion
@@ -293,7 +301,7 @@ public class DateRangeCalendarView extends LinearLayout {
                 }
 
                 if (shouldEnabledTime) {
-                    Log.w("TAG", "DateRangeCalendarView_onClick_296-> :" );
+                    Log.w("TAG", "DateRangeCalendarView_onClick_296-> :");
 
                     //region shouldEnabledTime
                     TimePickerDialog awesomeTimePickerDialog = new TimePickerDialog(mContext, mContext.getString(R.string.select_time), new TimePickerDialog.TimePickerCallback() {
