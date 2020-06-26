@@ -405,8 +405,8 @@ public class DatePickerDialog extends Dialog {
         void onRangeDateSelected(PersianCalendar startDate, PersianCalendar endDate);
     }
 
-    public interface OnMultipleDateSelectedListener {
-        void onMultipleDateSelected(ArrayList<PersianCalendar> startDate);
-    }
+//    public interface OnMultipleDateSelectedListener {
+//        void onMultipleDateSelected(ArrayList<PersianCalendar> startDate);
+//    }
     //endregion
 }

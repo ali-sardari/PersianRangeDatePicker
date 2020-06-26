@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static com.sardari.daterangepicker.customviews.DateRangeCalendarView.SelectionMode.Range;
-import static com.sardari.daterangepicker.customviews.DateRangeCalendarView.SelectionMode.Single;
-
 public class DateRangeCalendarView extends LinearLayout {
     //region Fields
     private Context mContext;
@@ -49,11 +46,22 @@ public class DateRangeCalendarView extends LinearLayout {
     private static final int STRIP_TYPE_NONE = 0;
     private static final int STRIP_TYPE_LEFT = 1;
     private static final int STRIP_TYPE_RIGHT = 2;
+    private static String last_Day = "";
+
+    public static String getLast_Day() {
+        return last_Day;
+    }
+
+    public static void setLast_Day(String last_Day) {
+        DateRangeCalendarView.last_Day = last_Day;
+    }
 
     private int headerBackgroundColor, weekColor, rangeStripColor, selectedDateCircleColor, selectedDateColor, defaultDateColor, disableDateColor, rangeDateColor, holidayColor, todayColor;
     private boolean shouldEnabledTime = false;
     private float textSizeTitle, textSizeWeek, textSizeDate;
     private PersianCalendar selectedCal, date;
+    private boolean isHideHeader = false;
+    public static String selectedDay = "";
     //endregion
 
     //region Enum
@@ -233,7 +241,7 @@ public class DateRangeCalendarView extends LinearLayout {
             date = DayContainer.GetDateFromKey(String.valueOf(key));
             selectedCal.setPersianDate(date.getPersianYear(), date.getPersianMonth(), date.getPersianDay());
 
-            if (selectionMode == Single.getValue()) {
+            if (selectionMode == SelectionMode.Single.getValue()) {
                 //region SelectionMode.Single
                 resetAllSelectedViews();
                 makeAsSelectedDate(container, 0);
@@ -271,7 +279,7 @@ public class DateRangeCalendarView extends LinearLayout {
                     //endregion
                 }
                 //endregion
-            } else if (selectionMode == Range.getValue()) {
+            } else if (selectionMode == SelectionMode.Range.getValue()) {
                 //region SelectionMode.Range
                 if (minSelectedDate != null) {
                     if (maxSelectedDate == null) {

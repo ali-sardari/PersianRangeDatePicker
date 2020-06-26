@@ -2,6 +2,7 @@ package com.sardari.ali.persianrangedatepicker;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
 
     Button btn_ShowDatePicker;
     TextView txtStartDate, txtEndDate;
+    DateRangeCalendarView calendar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +26,26 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initSingleDate() {
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
+        datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
+//        datePickerDialog.setEnableTimePicker(true);
+//        datePickerDialog.setShowGregorianDate(true);
+        datePickerDialog.setTextSizeTitle(10.0f);
+        datePickerDialog.setTextSizeWeek(12.0f);
+        datePickerDialog.setTextSizeDate(14.0f);
+        datePickerDialog.setCanceledOnTouchOutside(true);
+        datePickerDialog.setOnRangeDateSelectedListener(new DatePickerDialog.OnRangeDateSelectedListener() {
+            @Override
+            public void onRangeDateSelected(PersianCalendar startDate, PersianCalendar endDate) {
+                txtStartDate.setText(startDate.getPersianShortDateTime());
+                txtEndDate.setText(endDate.getPersianShortDateTime());
+            }
+        });
+//        datePickerDialog.setAcceptButtonColor(ContextCompat.getColor(this, R.color.colorAccent));
+//        datePickerDialog.showDialog();
+
+
+        calendar = findViewById(R.id.calendar);
         btn_ShowDatePicker = findViewById(R.id.btn_ShowDatePicker);
         txtStartDate = findViewById(R.id.txtStartDate);
         txtEndDate = findViewById(R.id.txtEndDate);
@@ -31,7 +53,26 @@ public class MainActivity extends AppCompatActivity {
         btn_ShowDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowDatePicker();
+                datePickerDialog.showDialog();
+            }
+        });
+
+        DateRangeCalendarView calendar = findViewById(R.id.calendar);
+        calendar.setCalendarListener(new DateRangeCalendarView.CalendarListener() {
+            @Override
+            public void onDateSelected(PersianCalendar date) {
+                Log.w("calendar",date.getPersianShortDate());
+            }
+
+            @Override
+            public void onDateRangeSelected(PersianCalendar startDate, PersianCalendar endDate) {
+                Log.w("calendar",startDate.getPersianShortDate());
+
+            }
+
+            @Override
+            public void onCancel() {
+
             }
         });
     }

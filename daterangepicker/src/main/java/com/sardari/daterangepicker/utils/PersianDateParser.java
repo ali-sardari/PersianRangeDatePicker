@@ -16,7 +16,7 @@ public class PersianDateParser {
     public PersianCalendar getPersianDate() {
         checkDateStringInitialValidation();
 
-        String tokens[] = splitDateString(normalizeDateString(dateString));
+        String[] tokens = splitDateString(normalizeDateString(dateString));
         int year = Integer.parseInt(tokens[0]);
         int month = Integer.parseInt(tokens[1]);
         int day = Integer.parseInt(tokens[2]);
@@ -47,7 +47,7 @@ public class PersianDateParser {
     }
 
     private String[] splitDateString(String dateString) {
-        String tokens[] = dateString.split(delimiter);
+        String[] tokens = dateString.split(delimiter);
         if (tokens.length != 3)
             throw new RuntimeException("wrong date:" + dateString + " is not a Persian Date or can not be parsed");
 
@@ -58,21 +58,4 @@ public class PersianDateParser {
         if (dateString == null)
             throw new RuntimeException("input didn't assign please use setDateString()");
     }
-
-    public String getDateString() {
-        return dateString;
-    }
-
-    public void setDateString(String dateString) {
-        this.dateString = dateString;
-    }
-
-    public String getDelimiter() {
-        return delimiter;
-    }
-
-    public void setDelimiter(String delimiter) {
-        this.delimiter = delimiter;
-    }
-
 }

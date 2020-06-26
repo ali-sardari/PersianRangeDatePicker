@@ -25,7 +25,22 @@ public class DayContainer {
 
     public static int GetContainerKey(PersianCalendar cal) {
         String str = cal.getPersianShortDate().replace("/", "");
-        return Integer.valueOf(str);
+        return Integer.parseInt(str);
+    }
+
+    public static String GetContainerKey2(PersianCalendar date) {
+        String year, month, day;
+        year = date.getPersianYear() + "";
+        if (date.getPersianMonth() <= 9)
+            month = "0" + date.getPersianMonth();
+        else
+            month = date.getPersianMonth() + "";
+        if (date.getPersianDay() <= 9)
+            day = "0" + date.getPersianDay();
+        else
+            day = date.getPersianDay() + "";
+
+        return year + month + day;
     }
 
     public static PersianCalendar GetDateFromKey(String key) {
