@@ -16,8 +16,6 @@ import com.sardari.daterangepicker.utils.FontUtils;
 import com.sardari.daterangepicker.utils.MyUtils;
 import com.sardari.daterangepicker.utils.PersianCalendar;
 
-import java.util.ArrayList;
-
 public class DatePickerDialog extends Dialog {
     //region Fields
     private Context mContext;
@@ -139,6 +137,11 @@ public class DatePickerDialog extends Dialog {
         calendar.build();
 
         ViewGroup insertPoint = findViewById(R.id.content);
+
+        if (insertPoint.getChildCount() > 0) {
+            insertPoint.removeAllViews();
+        }
+
         insertPoint.addView(calendar);
 
 

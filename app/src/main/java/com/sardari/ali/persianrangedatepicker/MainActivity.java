@@ -26,9 +26,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initSingleDate() {
-        final DatePickerDialog datePickerDialog = new DatePickerDialog(MainActivity.this);
+        calendar = findViewById(R.id.calendar);
+        btn_ShowDatePicker = findViewById(R.id.btn_ShowDatePicker);
+        txtStartDate = findViewById(R.id.txtStartDate);
+        txtEndDate = findViewById(R.id.txtEndDate);
+        //********************************************************
+
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(this);
         datePickerDialog.setSelectionMode(DateRangeCalendarView.SelectionMode.Range);
-//        datePickerDialog.setEnableTimePicker(true);
+        datePickerDialog.setEnableTimePicker(true);
 //        datePickerDialog.setShowGregorianDate(true);
         datePickerDialog.setTextSizeTitle(10.0f);
         datePickerDialog.setTextSizeWeek(12.0f);
@@ -43,19 +49,15 @@ public class MainActivity extends AppCompatActivity {
         });
 //        datePickerDialog.setAcceptButtonColor(ContextCompat.getColor(this, R.color.colorAccent));
 //        datePickerDialog.showDialog();
-
-
-        calendar = findViewById(R.id.calendar);
-        btn_ShowDatePicker = findViewById(R.id.btn_ShowDatePicker);
-        txtStartDate = findViewById(R.id.txtStartDate);
-        txtEndDate = findViewById(R.id.txtEndDate);
-
         btn_ShowDatePicker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 datePickerDialog.showDialog();
             }
         });
+
+        //********************************************************
+
 
         DateRangeCalendarView calendar = findViewById(R.id.calendar);
         calendar.setCalendarListener(new DateRangeCalendarView.CalendarListener() {
