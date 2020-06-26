@@ -27,9 +27,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
-import static com.sardari.daterangepicker.customviews.DateRangeCalendarView.SelectionMode.Range;
-import static com.sardari.daterangepicker.customviews.DateRangeCalendarView.SelectionMode.Single;
-
 public class DateRangeCalendarView extends LinearLayout {
     //region Fields
     private Context mContext;
@@ -54,6 +51,8 @@ public class DateRangeCalendarView extends LinearLayout {
     private boolean shouldEnabledTime = false;
     private float textSizeTitle, textSizeWeek, textSizeDate;
     private PersianCalendar selectedCal, date;
+    private boolean isHideHeader = false;
+    public static String selectedDay = "";
     //endregion
 
     //region Enum
@@ -233,7 +232,7 @@ public class DateRangeCalendarView extends LinearLayout {
             date = DayContainer.GetDateFromKey(String.valueOf(key));
             selectedCal.setPersianDate(date.getPersianYear(), date.getPersianMonth(), date.getPersianDay());
 
-            if (selectionMode == Single.getValue()) {
+            if (selectionMode == SelectionMode.Single.getValue()) {
                 //region SelectionMode.Single
                 resetAllSelectedViews();
                 makeAsSelectedDate(container, 0);
@@ -271,7 +270,7 @@ public class DateRangeCalendarView extends LinearLayout {
                     //endregion
                 }
                 //endregion
-            } else if (selectionMode == Range.getValue()) {
+            } else if (selectionMode == SelectionMode.Range.getValue()) {
                 //region SelectionMode.Range
                 if (minSelectedDate != null) {
                     if (maxSelectedDate == null) {

@@ -22,7 +22,7 @@ allprojects {
 Step 2. Add the dependency
 ```groovy
 dependencies {
-    implementation 'com.github.ali-sardari:PersianRangeDatePicker:1.2.1'
+    implementation 'com.github.ali-sardari:PersianRangeDatePicker:1.3.0'
 }
 ```
 
